@@ -1,4 +1,4 @@
-package com.example.securingweb;
+package io.muzoo.ssc.project.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
-				.loginPage("/login")
+	    			.loginPage("/login")
 				.permitAll()
 				.and()
 			.logout()
