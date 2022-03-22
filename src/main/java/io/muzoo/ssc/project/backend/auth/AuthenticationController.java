@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class AuthenticationController {
 
-    @GetMapping
+    @GetMapping("/api/test")
     public String test(){
         return "if this message is shown, login is successful cuz we didnt set to permit this path";
     }
@@ -39,12 +39,12 @@ public class AuthenticationController {
             return SimpleResponseDTO
                     .builder()
                     .success(false)
-                    .message("Incorrect username or password")
+                    .message(e.getMessage())
                     .build();
         }
     }
 
-    @PostMapping("/apr/logout")
+    @GetMapping("/api/logout")
     public SimpleResponseDTO logout(HttpServletRequest request){
         try {
             request.logout();
@@ -57,7 +57,7 @@ public class AuthenticationController {
             return SimpleResponseDTO
                     .builder()
                     .success(false)
-                    .message("failed to log out")
+                    .message(e.getMessage())
                     .build();
         }
     }
