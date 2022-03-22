@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		// permit root and /api/login and /api/logout
 		http.authorizeRequests()
-				.antMatchers("/", "api/login", "/api/logout")
+				.antMatchers("/", "/api/login", "/api/logout")
 				.permitAll();
 		// permit all Options
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
