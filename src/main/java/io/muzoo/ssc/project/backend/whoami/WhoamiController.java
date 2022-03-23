@@ -30,7 +30,7 @@ public class WhoamiController {
                 User u = userRepository.findFirstByUsername(user.getUsername());
 
                 return WhoamiDTO.builder()
-                        .loggedin(true)
+                        .loggedIn(true)
                         .name(u.getUsername())
                         .role(u.getRole())
                         .username(u.getUsername())
@@ -40,7 +40,7 @@ public class WhoamiController {
         }
         // user not login
         return WhoamiDTO.builder()
-                .loggedin(false)
+                .loggedIn(false)
                 .build();
     }
 }

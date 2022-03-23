@@ -11,7 +11,7 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class WhoamiDTO {
 
-    private boolean loggedin = false;
+    private boolean loggedIn = false;
 
     private String name;
 
