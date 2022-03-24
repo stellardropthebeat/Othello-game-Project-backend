@@ -2,17 +2,27 @@ package io.muzoo.ssc.project.backend.auth;
 
 import io.muzoo.ssc.project.backend.SimpleResponseDTO;
 
+import io.muzoo.ssc.project.backend.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class AuthenticationController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/api/test")
     public String test(){
@@ -54,6 +64,53 @@ public class AuthenticationController {
                     .message("successfully log out")
                     .build();
         } catch (ServletException e) {
+            return SimpleResponseDTO
+                    .builder()
+                    .success(false)
+                    .message(e.getMessage())
+                    .build();
+        }
+    }
+
+    @PostMapping("/api/signin")
+    public SimpleResponseDTO signin(HttpServletRequest request){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String cpassword = request.getParameter("cpassword");
+
+        String errorMessage = null;
+        try{
+            io.muzoo.ssc.project.backend.User newUser = userRepository.findFirstByUsername(username);
+
+            if (newUser != null){
+                errorMessage = String.format("Username %s has already been used.", username);
+            } else if (!StringUtils.equals(password, cpassword)){
+                errorMessage = "Confirmed password mismatches.";
+            } else if (StringUtils.isEmpty(password)){
+                errorMessage = "Password can't be blank.";
+            } else if (StringUtils.isEmpty(username)){
+                errorMessage = "Username can't be blank.";
+            }
+
+            if (errorMessage != null){
+                return SimpleResponseDTO
+                        .builder()
+                        .success(false)
+                        .message(errorMessage)
+                        .build();
+            } else {
+                newUser = new io.muzoo.ssc.project.backend.User();
+                newUser.setUsername(username);
+                newUser.setPassword(passwordEncoder.encode(password));
+                newUser.setRole("USER");
+                userRepository.save(newUser);
+                return SimpleResponseDTO
+                        .builder()
+                        .success(true)
+                        .message(String.format("Username %s has been created", username))
+                        .build();
+            }
+        } catch (Exception e) {
             return SimpleResponseDTO
                     .builder()
                     .success(false)
