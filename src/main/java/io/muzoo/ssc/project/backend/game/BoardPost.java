@@ -11,7 +11,7 @@ import java.util.Map;
 @RestController
 public class BoardPost {
 
-    @PostMapping("/api/board")
+    @PostMapping("/api/post-board")
     public SimpleResponseDTO updateBoard(@RequestBody List<List<String>> payload) {
         System.out.println(payload);
         CalculateBoard calculator = new CalculateBoard.CalculateBoardBuilder().board(payload).build();
