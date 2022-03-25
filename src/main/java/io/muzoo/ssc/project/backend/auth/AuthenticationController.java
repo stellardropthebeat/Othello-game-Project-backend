@@ -3,6 +3,7 @@ package io.muzoo.ssc.project.backend.auth;
 import io.muzoo.ssc.project.backend.SimpleResponseDTO;
 
 import io.muzoo.ssc.project.backend.UserRepository;
+import io.muzoo.ssc.project.backend.whoami.WhoamiDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -33,12 +34,15 @@ public class AuthenticationController {
     public SimpleResponseDTO login(HttpServletRequest request){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        System.out.println(username);
+        System.out.println(password);
         try{
             // check if there is a current user login, if so logout first
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal != null && principal instanceof User){
                 request.logout();
             }
+
             request.login(username, password);
             return SimpleResponseDTO
                     .builder()
@@ -118,5 +122,50 @@ public class AuthenticationController {
                     .build();
         }
     }
+
+    @PostMapping("/api/change_pass")
+    public SimpleResponseDTO changePass(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        String newPassword = request.getParameter("password");
+        String cpassword = request.getParameter("cpassword");
+
+        String errorMessage = null;
+        try{
+            io.muzoo.ssc.project.backend.User user = userRepository.findFirstByUsername(username);
+
+            if(user == null){
+                errorMessage = String.format("User %s does not exist.", username);
+            } else if(!StringUtils.equals(newPassword, cpassword)){
+                errorMessage = "Confirmed password mismatches";
+            } else if (StringUtils.isEmptyOrWhitespace(newPassword)){
+                errorMessage = "Password can't be blank.";
+            }
+
+            if (errorMessage != null) {
+                return SimpleResponseDTO
+                        .builder()
+                        .success(false)
+                        .message(errorMessage)
+                        .build();
+            } else {
+                user.setPassword(passwordEncoder.encode(newPassword));
+                user.setRole("USER");
+                userRepository.save(user);
+                return SimpleResponseDTO
+                        .builder()
+                        .success(true)
+                        .message("successfully change password")
+                        .build();
+            }
+        } catch (Exception ignored) {
+        }
+        return SimpleResponseDTO
+                .builder()
+                .success(false)
+                .message("fail to change password")
+                .build();
+
+    }
+
 }
 
