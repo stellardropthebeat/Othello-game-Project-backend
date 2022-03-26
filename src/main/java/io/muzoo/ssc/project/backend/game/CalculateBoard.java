@@ -11,7 +11,7 @@ public class CalculateBoard {
     private Map<Integer, List<List<Integer>>> possibleMoves;
 
     public Map<List<Integer>, List<List<Integer>>> getPossibleMoves() {
-        System.out.println(color);
+//        System.out.println(color);
 
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
