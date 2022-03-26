@@ -17,6 +17,8 @@ public class BoardRecord {
 
     private int turn;
 
+    private long board_id;
+
     @ElementCollection
     private List<String> board;
 

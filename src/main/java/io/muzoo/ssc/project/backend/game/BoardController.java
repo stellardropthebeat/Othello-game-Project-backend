@@ -40,16 +40,16 @@ public class BoardController {
         System.out.println(payload);
         BoardRecord b = new BoardRecord();
         b.setId(Long.parseLong(String.valueOf(payload.get("id"))));
+        b.setBoard_id(Long.parseLong(String.valueOf(payload.get("id"))));
         b.setTurn((Integer) payload.get("turn"));
         b.setBoard((List<String>) payload.get("board"));
         System.out.println(b);
-//        boardRepository.save(b);
+        boardRepository.save(b);
         return SimpleResponseDTO.builder().success(true).message("new board record added").build();
     }
 
     @GetMapping("/api/all-record")
     public void printBoards() {
-        String all = boardRepository.findAll().toString();
-        System.out.println(all);
+        boardRepository.findAll().forEach(r -> System.out.println(r.getBoard()));
     }
 }
