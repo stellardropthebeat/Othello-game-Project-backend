@@ -4,8 +4,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BoardRepository extends CrudRepository<BoardRecord, Long> {
+public interface BoardRecordRepository extends CrudRepository<BoardRecord, Long> {
 
     BoardRecord findBoardRecordById(long id);
     BoardRecord deleteBoardRecordById(long id);
+
+    Iterable<BoardRecord> findAllByRoomId(long roomId);
+
+    BoardRecord findBoardRecordByRoomIdAndTurn(long roomId, int turn);
 }

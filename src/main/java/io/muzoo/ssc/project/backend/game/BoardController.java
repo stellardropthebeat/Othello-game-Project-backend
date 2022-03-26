@@ -2,9 +2,8 @@ package io.muzoo.ssc.project.backend.game;
 
 import io.muzoo.ssc.project.backend.SimpleResponseDTO;
 import io.muzoo.ssc.project.backend.game.data.BoardRecord;
-import io.muzoo.ssc.project.backend.game.data.BoardRepository;
+import io.muzoo.ssc.project.backend.game.data.BoardRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class BoardController {
 
     @Autowired
-    BoardRepository boardRepository;
+    BoardRecordRepository boardRepository;
 
     @PostMapping("/api/post-board")
     public BoardDTO updateBoard(@RequestBody Map<String, Object> payload) {
@@ -38,18 +37,19 @@ public class BoardController {
     @PostMapping("/api/add-board-record")
     public SimpleResponseDTO addNewBoardRecord(@RequestBody Map<String, Object> payload) {
         System.out.println(payload);
-        BoardRecord b = new BoardRecord();
-        b.setId(Long.parseLong(String.valueOf(payload.get("id"))));
-        b.setBoard_id(Long.parseLong(String.valueOf(payload.get("id"))));
-        b.setTurn((Integer) payload.get("turn"));
-        b.setBoard((List<String>) payload.get("board"));
-        System.out.println(b);
-        boardRepository.save(b);
+        BoardRecord record = new BoardRecord();
+        record.setRoomId(Long.parseLong(String.valueOf(payload.get("roomId"))));
+        record.setTurn((Integer) payload.get("turn"));
+        record.setBoardRecord((List<String>) payload.get("board"));
+        System.out.println(record);
+        boardRepository.save(record);
         return SimpleResponseDTO.builder().success(true).message("new board record added").build();
     }
 
-    @GetMapping("/api/all-record")
-    public void printBoards() {
-        boardRepository.findAll().forEach(r -> System.out.println(r.getBoard()));
-    }
+
+//    @GetMapping("/api/all-record")
+//    public void printBoards() {
+//        boardRepository.findAll().forEach(r -> System.out.println(r.getBoard()));
+//    }
+
 }

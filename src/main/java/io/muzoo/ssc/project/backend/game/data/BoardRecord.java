@@ -17,9 +17,11 @@ public class BoardRecord {
 
     private int turn;
 
-    private long board_id;
+    private long roomId;
+
+    private long boardId = id;
 
     @ElementCollection
-    private List<String> board;
+    private List<String> boardRecord;
 
 }

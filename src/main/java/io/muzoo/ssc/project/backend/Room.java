@@ -1,4 +1,4 @@
-package io.muzoo.ssc.project.backend.game.data;
+package io.muzoo.ssc.project.backend;
 
 import lombok.Setter;
 import lombok.Getter;
@@ -18,7 +18,5 @@ public class Room {
     private String player1;
 
     private String player2;
-
-    private long boardId;
 }
 
