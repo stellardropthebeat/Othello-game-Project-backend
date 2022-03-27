@@ -20,16 +20,16 @@ public class BoardController {
 
     @PostMapping("/api/post-board")
     public BoardDTO updateBoard(@RequestBody Map<String, Object> payload) {
-        List<List<String>> board = (List<List<String>>) payload.get("board");
+        List<String> board = (List<String>) payload.get("board");
         String color;
         if ((boolean) payload.get("isBlack")) {
             color = "b";
         } else {
             color = "w";
         }
-        CalculateBoard calculator = new CalculateBoard.CalculateBoardBuilder().color(color).board(board).possibleMoves(new HashMap<>()).build();
-        Map<List<Integer>, List<List<Integer>>> possibleMoves = calculator.getPossibleMoves();
-//        System.out.println(possibleMoves);
+        CalculateBoard calculator = new CalculateBoard.CalculateBoardBuilder().color(color).possibleMoves(new HashMap<>()).build();
+        Map<Integer, List<Integer>> possibleMoves = calculator.getPossibleMoves(board);
+        System.out.println(possibleMoves);
 
         return BoardDTO.builder().possibleMoves(possibleMoves).build();
     }
