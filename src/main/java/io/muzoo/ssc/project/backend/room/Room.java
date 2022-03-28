@@ -15,8 +15,6 @@ public class Room {
     @GeneratedValue
     private long id;
 
-    private String lobbyName;
-
     private String player1;
 
     private String player2;
