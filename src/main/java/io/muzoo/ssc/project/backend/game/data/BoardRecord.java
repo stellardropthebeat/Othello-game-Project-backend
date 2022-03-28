@@ -19,8 +19,6 @@ public class BoardRecord {
 
     private long roomId;
 
-    private long boardId = id;
-
     @ElementCollection
     private List<String> boardRecord;
 
