@@ -1,4 +1,4 @@
-package io.muzoo.ssc.project.backend;
+package io.muzoo.ssc.project.backend.room;
 
 import lombok.Setter;
 import lombok.Getter;
@@ -14,6 +14,8 @@ public class Room {
     @Id
     @GeneratedValue
     private long id;
+
+    private String lobbyName;
 
     private String player1;
 

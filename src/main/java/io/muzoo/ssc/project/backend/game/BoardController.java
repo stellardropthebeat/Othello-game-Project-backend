@@ -41,7 +41,7 @@ public class BoardController {
         record.setRoomId(Long.parseLong(String.valueOf(payload.get("roomId"))));
         record.setTurn((Integer) payload.get("turn"));
         record.setBoardRecord((List<String>) payload.get("board"));
-        System.out.println(record);
+//        System.out.println(record);
         boardRepository.save(record);
         return SimpleResponseDTO.builder().success(true).message("new board record added").build();
     }

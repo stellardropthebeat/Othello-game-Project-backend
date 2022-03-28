@@ -13,6 +13,7 @@ import java.util.List;
 public class BoardRecord {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private int turn;
