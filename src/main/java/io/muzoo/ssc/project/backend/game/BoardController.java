@@ -30,7 +30,6 @@ public class BoardController {
         }
         CalculateBoard calculator = new CalculateBoard(color);
         Map<Integer, List<Integer>> possibleMoves = calculator.getPossibleMoves(board);
-//        System.out.println(possibleMoves);
 
         return BoardDTO.builder().possibleMoves(possibleMoves).build();
     }
