@@ -1,7 +1,5 @@
 package io.muzoo.ssc.project.backend.game;
 
-import lombok.Builder;
-
 import java.util.*;
 
 public class CalculateBoard {
@@ -15,7 +13,6 @@ public class CalculateBoard {
     }
 
     public Map<Integer, List<Integer>> getPossibleMoves(List<String> board1D) {
-//        System.out.println(color);
 
         this.board2D = to2DBoard(board1D);
 

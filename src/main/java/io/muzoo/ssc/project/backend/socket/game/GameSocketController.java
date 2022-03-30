@@ -35,10 +35,16 @@ public class GameSocketController {
         color = getColor(isBlack);
         CalculateBoard calculator = new CalculateBoard(color);
         Map<Integer, List<Integer>> possibleMoves = calculator.getPossibleMoves(retBoard);
+
+        if (possibleMoves.isEmpty()) {
+            isBlack = !isBlack;
+            color = getColor(isBlack);
+            calculator = new CalculateBoard(color);
+            possibleMoves = calculator.getPossibleMoves(retBoard);
+        }
+
         int blacks = (int) retBoard.stream().filter(d -> d.equals("b")).count();
         int whites= (int) retBoard.stream().filter(d -> d.equals("w")).count();
-
-        boolean isGameOver = retBoard.stream().noneMatch(d -> d.equals(""));
 
         JSONObject o = new JSONObject();
         o.put("board", retBoard);
@@ -46,7 +52,6 @@ public class GameSocketController {
         o.put("blacks", blacks);
         o.put("whites", whites);
         o.put("isBlack", isBlack);
-        o.put("isGameOver", isGameOver);
 
         return  o;
     }
