@@ -28,9 +28,9 @@ public class BoardController {
         } else {
             color = "w";
         }
-        CalculateBoard calculator = new CalculateBoard.CalculateBoardBuilder().color(color).possibleMoves(new HashMap<>()).build();
+        CalculateBoard calculator = new CalculateBoard(color);
         Map<Integer, List<Integer>> possibleMoves = calculator.getPossibleMoves(board);
-        System.out.println(possibleMoves);
+//        System.out.println(possibleMoves);
 
         return BoardDTO.builder().possibleMoves(possibleMoves).build();
     }

@@ -4,11 +4,15 @@ import lombok.Builder;
 
 import java.util.*;
 
-@Builder
 public class CalculateBoard {
     private String color;
     private List<List<String>> board2D;
     private Map<Integer, List<Integer>> possibleMoves;
+
+    public CalculateBoard(String color) {
+        this.color = color;
+        this.possibleMoves = new HashMap<>();
+    }
 
     public Map<Integer, List<Integer>> getPossibleMoves(List<String> board1D) {
 //        System.out.println(color);
