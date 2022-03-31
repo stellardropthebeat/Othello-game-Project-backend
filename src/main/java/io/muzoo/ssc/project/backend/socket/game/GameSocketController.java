@@ -1,7 +1,10 @@
 package io.muzoo.ssc.project.backend.socket.game;
 
 import io.muzoo.ssc.project.backend.game.CalculateBoard;
+import io.muzoo.ssc.project.backend.game.data.BoardRecord;
+import io.muzoo.ssc.project.backend.game.data.BoardRecordRepository;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -11,6 +14,10 @@ import java.util.*;
 
 @Controller
 public class GameSocketController {
+
+//    will extract unrelated code that shouldn't be here later
+    @Autowired
+    BoardRecordRepository boardRepository;
 
     @MessageMapping("/board/{RoomId}")
     @SendTo("/topic/play/{RoomId}")
@@ -67,5 +74,13 @@ public class GameSocketController {
         } else {
             return "w";
         }
+    }
+
+    private void addBoardRecord(long roomId, int turn, List<String> board) {
+        BoardRecord record = new BoardRecord();
+        record.setRoomId(roomId);
+        record.setTurn(turn);
+        record.setBoardRecord(board);
+        boardRepository.save(record);
     }
 }
