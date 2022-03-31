@@ -2,6 +2,7 @@ package io.muzoo.ssc.project.backend.socket.game;
 
 import io.muzoo.ssc.project.backend.game.CalculateBoard;
 import net.minidev.json.JSONObject;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,9 @@ import java.util.*;
 @Controller
 public class GameSocketController {
 
-    @MessageMapping("/board")
-    @SendTo("/topic/play")
-    public JSONObject play(Map<String, Object> message) throws Exception {
+    @MessageMapping("/board/{RoomId}")
+    @SendTo("/topic/play/{RoomId}")
+    public JSONObject play(@DestinationVariable("RoomId") String RoomId, Map<String, Object> message) throws Exception {
         List<String> board = (List<String>) message.get("board");
 
         boolean isBlack = (boolean)message.get("isBlack");
