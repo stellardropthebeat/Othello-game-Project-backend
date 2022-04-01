@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Room {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
     private String player1;
