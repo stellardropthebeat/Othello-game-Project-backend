@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class RoomController {
@@ -12,11 +14,20 @@ public class RoomController {
     @Autowired
     RoomRepository roomRepository;
 
-//    @GetMapping("/api/all-room")
-//    public RoomResponseDTO getAllRoom() {
-//        for (Room room : roomRepository.findAll()) {
-//        }
-//    }
+    @PostMapping("/api/join-room")
+    public RoomResponseDTO getFirstAvailableRoom(@RequestBody Map<String,Object> payload) {
+        for (Room room : roomRepository.findAll()) {
+            if (!room.getPlayer1().isEmpty() && room.getPlayer2().isEmpty()){
+                room.setPlayer2((String) payload.get("username"));
+                return RoomResponseDTO.builder().availableRoom(room.getId()).build();
+            }
+        }
+        //add room and create room
+        Room newRoom = new Room();
+        newRoom.setPlayer1((String) payload.get("username"));
+        roomRepository.save(newRoom);
+        return RoomResponseDTO.builder().availableRoom(newRoom.getId()).build();
+    }
 
     // if username is in player1 column, the user isBlack
     @PostMapping("/api/color")
