@@ -13,4 +13,6 @@ public class RoomResponseDTO {
 
     private boolean success;
     private String color = "";
+    private Long availableRoom;
+    private String message;
 }
