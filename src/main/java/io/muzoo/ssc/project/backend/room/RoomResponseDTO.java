@@ -11,4 +11,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RoomResponseDTO {
 
+    private boolean success;
+    private String color = "";
 }

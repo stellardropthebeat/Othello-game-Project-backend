@@ -20,11 +20,15 @@ public class RoomController {
 
     // if username is in player1 column, the user isBlack
     @PostMapping("/api/color")
-    public boolean getPlayer1(@RequestBody Map<String, Object> payload) {
+    public RoomResponseDTO getPlayer1(@RequestBody Map<String, Object> payload) {
         long id = Long.parseLong(String.valueOf(payload.get("roomId")));
         String username = (String) payload.get("username");
         Room room = roomRepository.findById(id).get();
-        return room.getPlayer1().equals(username);
+        if (room.getPlayer1().equals(username)) {
+            return RoomResponseDTO.builder().success(true).color("b").build();
+        } else {
+            return RoomResponseDTO.builder().success(true).color("w").build();
+        }
     }
 
 }

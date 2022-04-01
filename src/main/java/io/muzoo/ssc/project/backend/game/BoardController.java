@@ -29,7 +29,7 @@ public class BoardController {
         CalculateBoard calculator = new CalculateBoard(color);
         Map<Integer, List<Integer>> possibleMoves = calculator.getPossibleMoves(board);
 
-        return BoardDTO.builder().possibleMoves(possibleMoves).build();
+        return BoardDTO.builder().success(true).possibleMoves(possibleMoves).build();
     }
 
     @PostMapping("/api/add-board-record")

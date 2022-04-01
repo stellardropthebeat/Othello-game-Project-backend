@@ -13,5 +13,7 @@ import java.util.Map;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BoardDTO {
-    private Map<Integer, List<Integer>>  possibleMoves;
+
+    private boolean success;
+    private Map<Integer, List<Integer>> possibleMoves;
 }
