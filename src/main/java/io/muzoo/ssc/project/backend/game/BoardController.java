@@ -48,14 +48,6 @@ public class BoardController {
     }
 
 
-//    @PostMapping("/api/all-record")
-//    public void printBoards(@RequestBody Map<String, Object> payload) {
-//        long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
-//        int turn = (Integer) payload.get("turn");
-//
-//        System.out.println(boardRepository.findBoardRecordByRoomIdAndTurn(roomId, turn));
-//    }
-
     @PostMapping("/api/latest-game")
     public SimpleResponseDTO addLatestGameRecord(@RequestBody Map<String, Object> payload) {
         long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
@@ -76,9 +68,14 @@ public class BoardController {
 
         User user = userRepository.findFirstByUsername(username);
         long latestGame = user.getLatestGame();
-        List<String> board = boardRepository.findBoardRecordByRoomIdAndTurn(latestGame, turn).getBoardRecord();
-//        System.out.println(boardRepository.findBoardRecordByRoomIdAndTurn(latestGame, turn).getBoardRecord());
-        return BoardDTO.builder().success(true).board(board).build();
+        try {
+            List<String> board = boardRepository.findBoardRecordByRoomIdAndTurn(latestGame, turn).getBoardRecord();
+            return BoardDTO.builder().success(true).board(board).finished(false).build();
+        } catch (NullPointerException e) {
+            List<String> board = boardRepository.findBoardRecordByRoomIdAndTurn(latestGame, turn-1).getBoardRecord();
+            return BoardDTO.builder().success(true).board(board).finished(true).build();
+        }
+
     }
 
 }
