@@ -47,7 +47,7 @@ public class CalculateBoard {
 
         if (nextR >= 0 && nextR < 8 && nextC >= 0 && nextC < 8 && board2D.get(nextR).get(nextC).equals("") && !toFlip.isEmpty()) {
             Integer toPlace = to1D(nextR, nextC);
-            List<Integer> existingFlips = possibleMoves.getOrDefault(toPlace, new ArrayList<>());
+            List<Integer> existingFlips = possibleMoves.getOrDefault(toPlace, new ArrayList<>(Arrays.asList(toPlace)));
             existingFlips.addAll(toFlip);
             possibleMoves.put(toPlace, existingFlips);
         }

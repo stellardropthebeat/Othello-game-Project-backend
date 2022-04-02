@@ -15,7 +15,7 @@ import java.util.*;
 @Controller
 public class GameSocketController {
 
-//    will extract unrelated code that shouldn't be here later
+    //    will extract unrelated code that shouldn't be here later
     @Autowired
     BoardRecordRepository boardRepository;
 
@@ -23,16 +23,17 @@ public class GameSocketController {
     @SendTo("/topic/play/{RoomId}")
     public JSONObject play(@DestinationVariable("RoomId") String RoomId, Map<String, Object> message) throws Exception {
 
+        long roomId = Long.parseLong(String.valueOf(message.get("roomId")));
         List<String> board = (List<String>) message.get("board");
         List<Integer> toFlip = (List<Integer>) message.get("toFlip");
-        boolean isBlack = (boolean)message.get("isBlack");
+        boolean isBlack = (boolean) message.get("isBlack");
         int turn = (int) message.get("turn") + 1;
 
         // flipping
         String color = getColor(isBlack);
         int n = board.size();
         List<String> retBoard = new ArrayList<>();
-        for (int i=0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             if (toFlip.contains(i)) {
                 retBoard.add(color);
             } else {
@@ -55,7 +56,9 @@ public class GameSocketController {
         }
 
         int blacks = (int) retBoard.stream().filter(d -> d.equals("b")).count();
-        int whites= (int) retBoard.stream().filter(d -> d.equals("w")).count();
+        int whites = (int) retBoard.stream().filter(d -> d.equals("w")).count();
+
+        addBoardRecord(roomId, turn, retBoard);
 
         JSONObject o = new JSONObject();
         o.put("board", retBoard);
@@ -65,7 +68,7 @@ public class GameSocketController {
         o.put("isBlack", isBlack);
         o.put("turn", turn);
 
-        return  o;
+        return o;
     }
 
     private String getColor(boolean isBlack) {
