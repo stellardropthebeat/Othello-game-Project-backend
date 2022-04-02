@@ -51,7 +51,6 @@ public class RoomController {
         String username = (String) payload.get("username");
         if(leaveRoom.getPlayer1().equals(username)){
             roomRepository.deleteById(leaveRoom.getId());
-            roomRepository.save(leaveRoom);
             return RoomResponseDTO.builder().success(true).hostLeft(true).player1(null).player2(null).build();
         }
         else if (leaveRoom.getPlayer2().equals(username)){
