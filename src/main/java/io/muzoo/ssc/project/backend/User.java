@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "tbl_user")
-public class User {
+public class User implements Comparable<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,9 @@ public class User {
     private int score;
 
     private long latestGame;
+
+    @Override
+    public int compareTo(User o) {
+        return Integer.compare(getScore(), o.getScore());
+    }
 }
