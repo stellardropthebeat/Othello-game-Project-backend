@@ -21,4 +21,8 @@ public class User {
     private String password;
 
     private String role;
+
+    private int score;
+
+    private long latestGame;
 }
