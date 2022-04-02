@@ -18,12 +18,14 @@ public class RoomController {
 
     @PostMapping("/api/post-room")
     public RoomResponseDTO getPlayers(@RequestBody Map<String, Object> payload){
-
-        long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
-        Room room = roomRepository.findById(roomId).get();
-        String player1 = room.getPlayer1();
-        String player2 = room.getPlayer2();
-
+        Long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
+        String player1 = null;
+        String player2 = null;
+        if(roomRepository.findById(roomId).isPresent()){
+            Room room = roomRepository.findById(roomId).get();
+            player1 = room.getPlayer1();
+            player2 = room.getPlayer2();
+        }
         return RoomResponseDTO.builder().player1(player1).player2(player2).build();
     }
 
@@ -49,7 +51,8 @@ public class RoomController {
         String username = (String) payload.get("username");
         if(leaveRoom.getPlayer1().equals(username)){
             roomRepository.deleteById(leaveRoom.getId());
-            return RoomResponseDTO.builder().success(true).hostLeft(true).message("Host has left the room. Room is closed").build();
+            roomRepository.save(leaveRoom);
+            return RoomResponseDTO.builder().success(true).hostLeft(true).player1(null).player2(null).build();
         }
         else if (leaveRoom.getPlayer2().equals(username)){
             leaveRoom.setPlayer2(null);
