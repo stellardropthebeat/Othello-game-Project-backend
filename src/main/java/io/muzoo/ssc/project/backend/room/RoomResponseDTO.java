@@ -15,4 +15,7 @@ public class RoomResponseDTO {
     private String color = "";
     private Long availableRoom;
     private String message;
+    private boolean hostLeft;
+    private String player1;
+    private String player2;
 }
