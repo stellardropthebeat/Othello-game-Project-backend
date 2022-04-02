@@ -16,4 +16,5 @@ public class BoardDTO {
 
     private boolean success;
     private Map<Integer, List<Integer>> possibleMoves;
+    private List<String> board;
 }

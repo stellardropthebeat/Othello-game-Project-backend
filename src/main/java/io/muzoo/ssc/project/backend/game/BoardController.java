@@ -1,6 +1,8 @@
 package io.muzoo.ssc.project.backend.game;
 
 import io.muzoo.ssc.project.backend.SimpleResponseDTO;
+import io.muzoo.ssc.project.backend.User;
+import io.muzoo.ssc.project.backend.UserRepository;
 import io.muzoo.ssc.project.backend.game.data.BoardRecord;
 import io.muzoo.ssc.project.backend.game.data.BoardRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class BoardController {
 
     @Autowired
     BoardRecordRepository boardRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @PostMapping("/api/post-board")
     public BoardDTO updateBoard(@RequestBody Map<String, Object> payload) {
@@ -34,24 +39,46 @@ public class BoardController {
 
     @PostMapping("/api/add-board-record")
     public SimpleResponseDTO addNewBoardRecord(@RequestBody Map<String, Object> payload) {
-//        System.out.println(payload);
         BoardRecord record = new BoardRecord();
         record.setRoomId(Long.parseLong(String.valueOf(payload.get("roomId"))));
         record.setTurn((Integer) payload.get("turn"));
         record.setBoardRecord((List<String>) payload.get("boardRecord"));
-//        System.out.println(record);
         boardRepository.save(record);
         return SimpleResponseDTO.builder().success(true).message("new board record added").build();
     }
 
 
-    @PostMapping("/api/all-record")
-    public void printBoards(@RequestBody Map<String, Object> payload) {
-//        boardRepository.deleteAll();
-        long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
-        int turn = (Integer) payload.get("turn");
+//    @PostMapping("/api/all-record")
+//    public void printBoards(@RequestBody Map<String, Object> payload) {
+//        long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
+//        int turn = (Integer) payload.get("turn");
+//
+//        System.out.println(boardRepository.findBoardRecordByRoomIdAndTurn(roomId, turn));
+//    }
 
-        System.out.println(boardRepository.findBoardRecordByRoomIdAndTurn(roomId, turn));
+    @PostMapping("/api/latest-game")
+    public SimpleResponseDTO addLatestGameRecord(@RequestBody Map<String, Object> payload) {
+        long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
+        String username = (String) payload.get("username");
+        User user = userRepository.findFirstByUsername(username);
+        user.setLatestGame(roomId);
+        int prevScore = user.getScore();
+        int gameScore = (int) payload.get("score");
+        user.setScore(prevScore + gameScore);
+        userRepository.save(user);
+        return SimpleResponseDTO.builder().success(true).message("add latest game").build();
+    }
+
+    @PostMapping("/api/replay")
+    public BoardDTO getReplayBoard(@RequestBody Map<String, Object> payload) {
+        int turn = (Integer) payload.get("turn");
+        String username = (String) payload.get("username");
+
+        User user = userRepository.findFirstByUsername(username);
+        long latestGame = user.getLatestGame();
+        List<String> board = boardRepository.findBoardRecordByRoomIdAndTurn(latestGame, turn).getBoardRecord();
+//        System.out.println(boardRepository.findBoardRecordByRoomIdAndTurn(latestGame, turn).getBoardRecord());
+        return BoardDTO.builder().success(true).board(board).build();
     }
 
 }

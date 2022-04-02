@@ -29,6 +29,8 @@ public class RoomSocketController {
         JSONObject object = new JSONObject();
         object.put("player1", player1);
         object.put("player2", player2);
+        System.out.println(player1);
+        System.out.println(player2);
 
         return object;
     }
