@@ -47,16 +47,18 @@ public class RoomController {
 
     @PostMapping("/api/leave-room")
     public RoomResponseDTO leaveRoom(@RequestBody Map<String,Object> payload){
-        Room leaveRoom = roomRepository.findById(Long.parseLong(String.valueOf(payload.get("roomId")))).get();
-        String username = (String) payload.get("username");
-        if(leaveRoom.getPlayer1().equals(username)){
-            roomRepository.deleteById(leaveRoom.getId());
-            return RoomResponseDTO.builder().success(true).hostLeft(true).player1(null).player2(null).build();
-        }
-        else if (leaveRoom.getPlayer2().equals(username)){
-            leaveRoom.setPlayer2(null);
-            roomRepository.save(leaveRoom);
-            return RoomResponseDTO.builder().success(true).hostLeft(false).message("Player2 has left the room").build();
+        if (roomRepository.findById(Long.parseLong(String.valueOf(payload.get("roomId")))).isPresent()) {
+            Room leaveRoom = roomRepository.findById(Long.parseLong(String.valueOf(payload.get("roomId")))).get();
+            String username = (String) payload.get("username");
+            if(leaveRoom.getPlayer1().equals(username)){
+                roomRepository.deleteById(leaveRoom.getId());
+                return RoomResponseDTO.builder().success(true).hostLeft(true).player1(null).player2(null).build();
+            }
+            else if (leaveRoom.getPlayer2().equals(username)){
+                leaveRoom.setPlayer2(null);
+                roomRepository.save(leaveRoom);
+                return RoomResponseDTO.builder().success(true).hostLeft(false).message("Player2 has left the room").build();
+            }
         }
         return null;
     }
