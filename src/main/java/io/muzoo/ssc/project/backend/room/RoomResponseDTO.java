@@ -18,4 +18,5 @@ public class RoomResponseDTO {
     private boolean hostLeft;
     private String player1;
     private String player2;
+    private boolean gameStart;
 }

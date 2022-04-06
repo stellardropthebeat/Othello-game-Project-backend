@@ -27,17 +27,24 @@ public class RoomSocketController {
         Long roomId = Long.parseLong(String.valueOf(payload.get("roomId")));
         String player1 = null;
         String player2 = null;
+        boolean canStart = false;
         if(roomRepository.findById(roomId).isPresent()){
             Room room = roomRepository.findById(roomId).get();
             player1 = room.getPlayer1();
             player2 = room.getPlayer2();
+
+            if(player1!=null && player2!=null){
+                canStart = true;
+            }
         }
 
         JSONObject object = new JSONObject();
         object.put("player1", player1);
         object.put("player2", player2);
+        object.put("canStart", canStart);
         System.out.println(player1);
         System.out.println(player2);
+        System.out.println(canStart);
 
         return object;
     }
