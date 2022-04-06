@@ -20,6 +20,7 @@ public class LeaderboardController {
         List<User> userList = userRepository.findAll();
         ArrayList<ArrayList<String> > scoreTable = new ArrayList<ArrayList<String> >();
         Collections.sort(userList);
+        Collections.reverse(userList);
 
         int topten = 1;
         for (User u: userList) {
