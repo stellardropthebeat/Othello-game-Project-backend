@@ -1,13 +1,10 @@
 package io.muzoo.ssc.project.backend.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -54,11 +51,11 @@ public class RoomController {
                 roomRepository.deleteById(leaveRoom.getId());
                 return RoomResponseDTO.builder().success(true).hostLeft(true).player1(null).player2(null).build();
             }
-            else if (leaveRoom.getPlayer2().equals(username)){
-                leaveRoom.setPlayer2(null);
-                roomRepository.save(leaveRoom);
-                return RoomResponseDTO.builder().success(true).hostLeft(false).message("Player2 has left the room").build();
-            }
+            // else if (leaveRoom.getPlayer2().equals(username)){
+            //    leaveRoom.setPlayer2(null);
+            //    roomRepository.save(leaveRoom);
+            //    return RoomResponseDTO.builder().success(true).hostLeft(false).message("Player2 has left the room").build();
+            //}
         }
         return null;
     }
