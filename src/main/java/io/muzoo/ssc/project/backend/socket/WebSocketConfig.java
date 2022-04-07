@@ -13,9 +13,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("http://localhost:8080").withSockJS();
-        registry.addEndpoint("/board-socket").setAllowedOrigins("http://localhost:8080").withSockJS();
-        registry.addEndpoint("/waiting-room-socket").setAllowedOrigins("http://localhost:8080").withSockJS();
+        registry.addEndpoint("/api/gs-guide-websocket").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/api/board-socket").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/api/waiting-room-socket").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
