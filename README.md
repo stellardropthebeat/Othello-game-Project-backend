@@ -1,1 +1,2 @@
-# ssc-y21t2-backend-team-c
+# Software System Construction (MUIC) Project Team C
+# Online Othello game
